@@ -24,8 +24,9 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "/home/deepesh/Development/public/portfilio/Fresh-Cart/assets/app/FoddyLogo.png"
+  image_path: "assets/FoddyLogo.png"
   min_sdk_android: 21
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
