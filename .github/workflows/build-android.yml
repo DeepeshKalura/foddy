@@ -22,6 +22,10 @@ jobs:
         - name: Install dependencies
           run: flutter pub get
 
+        - name: Decode Keystore
+          run: |
+            echo "$KEYSTORE_PATH" | base64 --decode > /home/runner/keystore.jks
+        
         - name: Create key.properties
           run: |
             echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/key.properties
@@ -29,10 +33,7 @@ jobs:
             echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
             echo "storeFile=/home/runner/keystore.jks" >> android/key.properties
 
-        # Decode Keystore
-        - name: Decode Keystore
-          run: |
-           echo "$KEYSTORE_PATH" | base64 --decode > /home/runner/keystore.jks
+        
 
         # Build Release APK
         # TODO: Add test case here too but hey it is jun fun project
