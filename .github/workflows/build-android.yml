@@ -24,7 +24,7 @@ jobs:
 
         - name: Decode Keystore
           run: |
-            echo "$KEYSTORE_PATH" | base64 --decode > /home/runner/keystore.jks
+            echo "${{ secrets.KEYSTORE_PATH }}" | base64 --decode > /home/runner/keystore.jks
         
         - name: Create key.properties
           run: |
