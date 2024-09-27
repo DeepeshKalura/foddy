@@ -1,0 +1,34 @@
+name: foddy
+description: "Foody is a sleek and modern food ordering system UI, designed to provide users with a seamless and delightful experience when ordering food from the comfort of their homes. Built with Flutter and Dart, Foody combines beautiful design with user-friendly functionality, making it easy and enjoyable to browse menus, select meals, and place orders."
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.0.10+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "/home/deepesh/Development/public/portfilio/Fresh-Cart/assets/app/FoddyLogo.png"
+  min_sdk_android: 21
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/

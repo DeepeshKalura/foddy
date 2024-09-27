@@ -1,0 +1,76 @@
+name:  Build and release android sdk 
+
+on:
+    push: 
+        branches:
+            - main
+
+jobs:
+    build:
+        name: Build Androind SDK
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Clone repository
+          uses: actions/checkout@v4
+        - name: Set up Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            channel: stable
+        - run: flutter --version
+        # Install dependencies
+        - name: Install dependencies
+          run: flutter pub get
+
+        # Decode Keystore
+        - run: echo "$KEYSTORE_PATH" | base64 --decode > /home/runner/foddy.jks
+
+        # Build Release APK
+        # TODO: Add test case here too but hey it is jun fun project
+        - name: BUILD android APK 
+          env:
+           KEYSTORE_PATH: /home/runner/keystore.jks
+           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          run: flutter build apk --release
+
+        - name: Upload APK artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: android-apk
+            path: build/app/outputs/flutter-apk/app-release.apk
+        
+    release:
+        name: Create Release and Upload APK
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Download APK artifact
+              uses: actions/download-artifact@v3
+              with: 
+                name: android-apk
+            
+            - name: Create Release 
+              id: create_release
+              uses: actions/create-release@v1
+              with:
+                tag_name: ${{ github.sha }}
+                release_name: Android Build Release - ${{ github.sha }}
+                draft: false
+                prerelease: false
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Upload APK to Release
+              uses: actions/upload-release-asset@v1
+              with:
+                upload_url: ${{ steps.create_release.outputs.upload_url }}
+                asset_path: build/app/outputs/flutter-apk/app-release.apk
+                asset_name: app-release.apk
+                asset_content_type: application/vnd.android.package-archive
+        
+
+
+
